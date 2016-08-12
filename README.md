@@ -1,0 +1,2 @@
+# raspberry_pi_measure_weight
+ラズパイでペットの体重を測ってみたいと思います。
