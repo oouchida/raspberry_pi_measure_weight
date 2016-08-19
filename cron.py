@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- 
 
+import os
 import ConfigParser
 import json
 import gspread
@@ -7,7 +8,7 @@ import oauth2client.client
 from datetime import datetime as dt
 
 inifile = ConfigParser.SafeConfigParser()
-inifile.read("./setting.ini")
+inifile.read("%s/setting.ini" % os.path.dirname(__file__))
 
 private_key_filename = inifile.get("settings","private_key_filename")
 DEBUG = inifile.get("settings","debug")
@@ -16,7 +17,7 @@ DEBUG = inifile.get("settings","debug")
 offset = inifile.get("settings","offset")
 
 # 認証
-json_key = json.load(open(private_key_filename))
+json_key = json.load(open(os.path.dirname(__file__) + '/' + private_key_filename))
 scope = ['https://spreadsheets.google.com/feeds']
 credentials = oauth2client.client.SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'].encode(), scope)
 gc = gspread.authorize(credentials)
