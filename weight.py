@@ -12,7 +12,7 @@ class weight:
 	date = ""
 	value = ""
 
-	def readadc(adcnum, clockpin, mosipin, misopin, cspin):
+	def readadc(self, adcnum, clockpin, mosipin, misopin, cspin):
 		if ((adcnum > 7) or (adcnum < 0)):
 			return -1
 		GPIO.output(cspin, True)
@@ -49,14 +49,15 @@ class weight:
 	def median(ls):
 		return sorted(ls)[len(ls)//2]
 
-	# change these as desired - they're the pins connected from the
-	# SPI port on the ADC to the Cobbler
-	SPICLK = 18
-	SPIMISO = 23
-	SPIMOSI = 24
-	SPICS = 25
 
 	def measure(self):
+		# change these as desired - they're the pins connected from the
+		# SPI port on the ADC to the Cobbler
+		SPICLK = 18
+		SPIMISO = 23
+		SPIMOSI = 24
+		SPICS = 25
+
 		# set up the SPI interface pins
 		GPIO.setup(SPIMOSI, GPIO.OUT)
 		GPIO.setup(SPIMISO, GPIO.IN)
@@ -77,7 +78,7 @@ class weight:
 			trim_pot_changed = False
 
 			# read the analog pin
-			trim_pot = readadc(potentiometer_adc, SPICLK, SPIMOSI, SPIMISO, SPICS)
+			trim_pot = self.readadc(potentiometer_adc, SPICLK, SPIMOSI, SPIMISO, SPICS)
 
 			# 抵抗10k
 			R1 = 10.0
@@ -89,7 +90,7 @@ class weight:
 			fg = 880.79/Rf + 47.96
 
 			tdatetime = dt.now()
-			self.date = tdatetime.strftime('%Y/%m/%d %H:00:00')
+			self.date = tdatetime.strftime('%Y/%m/%d %H:%M:%S')
 			self.value = fg
 
 			# hang out and do nothing for a half second
